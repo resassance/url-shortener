@@ -4,12 +4,50 @@
 <div class="bg-primary text-white p-5 rounded shadow mb-5">
     <h1 class="display-4">Simplify your links</h1>
     <p class="lead">Вставьте ссылку ниже, чтобы получить короткий вариант</p>
-    </div>
+    
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        <div class="input-group input-group-lg">
+            {{ form.original_url }}
+            <button class="btn btn-light" type="submit">Сократить</button>
+        </div>
+    </form>
+</div>
 
 <div class="card shadow">
     <div class="card-body">
-        <h5 class="card-title">Ваши ссылки</h5>
-        <p class="text-muted">Здесь будет список ваших сокращенных ссылок</p>
+        <h5 class="card-title mb-4">Ваши ссылки</h5>
+        {% if links %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Оригинал</th>
+                            <th>Короткая ссылка</th>
+                            <th>Клики</th>
+                            <th>Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for link in links %}
+                        <tr>
+                            <td class="text-truncate" style="max-width: 200px;">{{ link.original_url }}</td>
+                            <td>
+                                <a href="{% url 'redirect_url' link.short_code %}" target="_blank">
+                                    {{ request.get_host }}/{{ link.short_code }}
+                                </a>
+                            </td>
+                            <td><span class="badge bg-info text-dark">{{ link.clicks }}</span></td>
+                            <td>{{ link.created_at|date:"d.m.Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted">У вас пока нет сокращенных ссылок</p>
+        {% endif %}
     </div>
 </div>
+
 {% endblock %}
