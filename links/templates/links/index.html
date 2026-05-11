@@ -1,6 +1,15 @@
 {% extends 'links/base.html' %}
 
 {% block content %}
+
+{% if not user.is_authenticated %}
+    <div class="alert alert-info shadow-sm">
+        <strong>Хотите сокращать ссылки и сохранять историю?</strong> 
+        <a href="{% url 'login' %}" class="alert-link">Войдите</a> или 
+        <a href="{% url 'register' %}" class="alert-link">зарегистрируйтесь</a>, чтобы начать.
+    </div>
+{% endif %}
+
 <div class="bg-primary text-white p-5 rounded shadow mb-5">
     <h1 class="display-4">Simplify your links</h1>
     <p class="lead">Вставьте ссылку ниже, чтобы получить короткий вариант</p>
@@ -37,7 +46,7 @@
                                     {{ request.get_host }}/{{ link.short_code }}
                                 </a>
                             </td>
-                            <td><span class="badge bg-info text-dark">{{ link.clicks }}</span></td>
+                            <td><span class="badge bg-info text-dark">{{ link.clicks_count }}</span></td>
                             <td>{{ link.created_at|date:"d.m.Y" }}</td>
                         </tr>
                         {% endfor %}

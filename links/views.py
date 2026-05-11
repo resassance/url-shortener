@@ -18,10 +18,12 @@ def register_view(request):
 def index_view(request):
     if request.method == 'POST':
         form = LinkForm(request.POST)
+        if not request.user.is_authenticated:
+            return redirect('login')
+        
         if form.is_valid():
             link = form.save(commit=False)
-            if request.user.is_authenticated:
-                link.user = request.user
+            link.user = request.user
             
             link.short_code = str(uuid.uuid4())[:6]
             link.save()
@@ -37,4 +39,6 @@ def index_view(request):
 
 def redirect_view(request, short_code):
     link = get_object_or_404(Link, short_code=short_code)
+    link.clicks_count += 1
+    link.save()
     return redirect(link.original_url)
