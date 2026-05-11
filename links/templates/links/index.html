@@ -10,15 +10,15 @@
     </div>
 {% endif %}
 
-<div class="bg-primary text-white p-5 rounded shadow mb-5">
-    <h1 class="display-4">Simplify your links</h1>
-    <p class="lead">Вставьте ссылку ниже, чтобы получить короткий вариант</p>
+<div class="bg-primary text-white p-5 rounded-4 shadow-lg mb-5 text-center">
+    <h1 class="display-5 fw-bold mb-3">Упростите ссылки</h1>
+    <p class="lead mb-4">Вставьте ссылку ниже, чтобы получить короткий вариант</p>
     
-    <form method="post" class="mt-4">
+    <form method="post" class="mx-auto" style="max-width: 700px;">
         {% csrf_token %}
-        <div class="input-group input-group-lg">
+        <div class="input-group input-group-lg shadow-sm">
             {{ form.original_url }}
-            <button class="btn btn-light" type="submit">Сократить</button>
+            <button class="btn btn-light px-4 fw-bold text-primary" type="submit">Сократить</button>
         </div>
     </form>
 </div>
